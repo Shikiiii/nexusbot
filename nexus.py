@@ -4,6 +4,13 @@ from discord.ext.commands import Bot
 import asyncio
 from discord import Forbidden
 from discord import HTTPException
+from itertools import cycle
+import aiohttp
+import random
+import os
+import json
+import time
+import datetime
  
 bot = commands.Bot(command_prefix='!')
 bot.remove_command('help')
