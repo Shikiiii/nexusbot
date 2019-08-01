@@ -1,1 +1,1 @@
-worker: node nexus.py
+worker: python nexus.py
