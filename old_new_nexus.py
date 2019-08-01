@@ -39,7 +39,7 @@ async def on_message(message):
         if message.content in role_names:
             new_role = discord.utils.get(server.roles, name=message.content)
             if hasattr(new_role, "id"):
-                message.delete()
+                await message.delete()
                 print("We have a match! Role:" + new_role.name)
                 print("Checking colored roles to remove...")
                 toremove = []
