@@ -56,12 +56,13 @@ async def on_message(message):
                 await message.author.add_roles(new_role)
                 print("Great success!")
                 embed = discord.Embed(title="You successfully changed your color to **{}**.".format(str(new_role)),
-                                      description="Enjoy your new color! | Nexus", color=new_role.colour)
+                                      description="Enjoy your new color! | Nexus ", color=new_role.colour)
                 await message.author.send_message(embed=embed)
+                await message.author.send_message("``````")
         else:
             await message.author.send_message(
                 ":x: | You entered an invalid color.\n"
-                "Please note that the colors are case sensitive, so spell them as you see them.")
+                "Please note that the colors are case sensitive, so spell them as you see them. \n ``````")
             await message.delete()
         if message.content == "none":
             toremove = []
