@@ -23,7 +23,7 @@ class MyClient(Client):
                            "darkorchid", "darkviolet", "darkmagenta", "mediumpurple", "mediumslateblue", "greenyellow",
                            "slateblue"}
         await self.change_presence(activity=discord.Game(name='with your feelings.'))
-        print(f'Ready, we have logged in as {self}!')
+        print(f'Ready, we have logged in as {self.user.name}!')
 
     async def on_message(self, message: Message):
         if message.author == self.user:
