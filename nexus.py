@@ -83,4 +83,4 @@ async def run_tests():
 	await bot.logout()
 	print("Logged out, see you later! ^^")
 
-bot.run(process.env.token)
+bot.run(os.environ.get("token"))
