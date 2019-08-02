@@ -18,7 +18,7 @@ class MyClient(Client):
                            "coral", "indianred", "lightcoral", "darksalmon", "salmon", "lightsalmon", "orangered",
                            "darkorange", "orange", "gold", "darkgoldenrod", "goldenrod", "palegoldenrod", "pink",
                            "lightpink", "hotpink", "deeppink", "darkkhaki", "palevioletred", "khaki",
-                           "mediumvioletred", "orchid", "olive", "magenta", "violet", "plum", "thistle", "yellow",
+                           "mediumvioletred", "orchid", "olive", "magenta", "violet", "plum", "thistle",
                            "purple", "yellowgreen", "darkolivegreen", "olivedrab", "mediumorchid", "lawngreen",
                            "darkorchid", "darkviolet", "darkmagenta", "mediumpurple", "mediumslateblue", "greenyellow",
                            "slateblue"}
