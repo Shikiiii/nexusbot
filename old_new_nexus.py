@@ -2,6 +2,10 @@ import discord
 from discord.ext.commands import Bot
 import os
 
+# Trying to make the "ping" command work, just temporary:
+import time
+import datetime
+
 bot = Bot(command_prefix='!')
 bot.remove_command('help')
 
