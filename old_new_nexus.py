@@ -1,10 +1,9 @@
-import discord
-from discord.ext.commands import Bot
+# Trying to make the "ping" command work, just temporary:
+import datetime
 import os
 
-# Trying to make the "ping" command work, just temporary:
-import time
-import datetime
+import discord
+from discord.ext.commands import Bot
 
 bot = Bot(command_prefix='!')
 bot.remove_command('help')
@@ -83,40 +82,43 @@ async def on_message(message):
 @bot.command(pass_context=True)
 async def ping(ctx):
     delta = datetime.datetime.now() - ctx.message.timestamp
-    ping = round(delta.microseconds / 1000)
-    if ping < 100:
-        embed = discord.Embed(title="Ping: {}ms.".format(ping),
+    delta_ping = round(delta.microseconds / 1000)
+    if delta_ping < 100:
+        embed = discord.Embed(title="Ping: {}ms.".format(delta_ping),
                               description=":green_book: Ping is normal! There's no need to inform bot support.",
                               color=0x00ff00)
-        await channel.send(embed=embed)
+        await ctx.message.channel.send(embed=embed)
         return
-    elif ping < 200:
-        embed = discord.Embed(title="Ping: {}ms.".format(ping),
-                              description=":orange_book: Ping is abnormal! There's no need to inform bot support, but try using !ping again after 5 minutes and check the ping again, just in case.",
+    elif delta_ping < 200:
+        embed = discord.Embed(title="Ping: {}ms.".format(delta_ping),
+                              description=":orange_book: Ping is abnormal! There's no need to inform bot support, "
+                                          "but try using !ping again after 5 minutes and check the ping again, "
+                                          "just in case.",
                               color=0xfe9a2e)
-        await channel.send(embed=embed)
+        await ctx.message.channel.send(embed=embed)
         return
     else:
-        embed = discord.Embed(title="Ping: {}ms.".format(ping),
+        embed = discord.Embed(title="Ping: {}ms.".format(delta_ping),
                               description=":closed_book: Ping is high! Please, type ``inform`` to inform bot support.",
                               color=0xff0000)
-        await channel.send(embed=embed)
-        
-        async def check(msg):
-            return msg.content == 'inform' and m.channel == ctx.message.channel
-		
-            msg = await bot.wait_for('message', check=check)
+        await ctx.message.channel.send(embed=embed)
+
+        async def check(message):
+            return message.content == 'inform' and message.channel == ctx.message.channel
+
+        msg = await bot.wait_for('message', check=check)
 
         if msg is None:
-            await channel.send("Alright, {}. The bot support wasn't informed because you didn't typed ``inform``.".format(
-                                       ctx.message.author.name))
-            return
+            await ctx.message.channel.send(
+                "Alright, {}. The bot support wasn't informed because you didn't typed ``inform``.".format(
+                    ctx.message.author.name))
+        else:
+            informed = discord.Embed(title="Thank you! The bot support has been informed.", description="owo",
+                                     color=0x3adf00)
+            botsupportchannel = discord.utils.get(ctx.message.server.channels, name="logs")
+            await botsupportchannel.send("{} reported a high ping! {}ms.".format(ctx.message.author, delta_ping))
+            await botsupportchannel.send("", embed=informed)
 
-        informed = discord.Embed(title="Thank you! The bot support has been informed.", description="owo",
-                                 color=0x3adf00)
-        botsuppchannel = discord.utils.get(ctx.message.server.channels, name="logs")
-        await botsupportchannel.send("{} reported a high ping! {}ms.".format(ctx.message.author, ping))
-        await botsupportchannel.send("", embed=informed)
 
 async def run_tests():
     print("Running tests!")
