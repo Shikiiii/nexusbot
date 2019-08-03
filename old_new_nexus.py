@@ -16,7 +16,7 @@ role_names = set()
 @bot.event
 async def on_ready():
     global server
-    server = bot.get_guild("599611697464082434")
+    server = bot.get_guild(599611697464082434)
 
     global role_names
     role_names = {"red", "yellow", "black", "maroon", "darkred", "brown", "firebrick", "crimson", "tomato", "coral",
