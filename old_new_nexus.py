@@ -3,6 +3,7 @@ import datetime
 import os
 
 import discord
+from discord.ext import commands
 from discord.ext.commands import Bot
 
 bot = Bot(command_prefix='!')
@@ -80,7 +81,7 @@ async def on_message(message):
                 await message.author.remove_roles(role)
 
 
-@bot.command(name='ping')
+@commands.command()
 async def ping(ctx):
     print("Testing ping!")
     delta = datetime.datetime.now() - ctx.message.timestamp
@@ -139,5 +140,7 @@ async def run_tests():
     await bot.logout()
     print("Logged out, see you later! ^^")
 
+
+bot.add_command(ping)
 
 bot.run(os.environ.get("token"))
