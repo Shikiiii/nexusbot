@@ -3,7 +3,6 @@ import datetime
 import os
 
 import discord
-from discord.ext import commands
 from discord.ext.commands import Bot
 
 bot = Bot(command_prefix='!')
@@ -37,7 +36,9 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     print("Received message from channel " + str(message.channel))
-    if message.channel.id == 599640898233565198:
+    if message.content == "!ping":
+        await ping(message)
+    elif message.channel.id == 599640898233565198:
         print("Message is in the right channel!")
         print("Trying to matching message to a role... Message:" + message.content)
         if message.content in role_names:
@@ -81,16 +82,15 @@ async def on_message(message):
                 await message.author.remove_roles(role)
 
 
-@commands.command()
-async def ping(ctx):
+async def ping(message):
     print("Testing ping!")
-    delta = datetime.datetime.now() - ctx.message.timestamp
+    delta = datetime.datetime.now() - message.timestamp
     delta_ping = round(delta.microseconds / 1000)
     if delta_ping < 100:
         embed = discord.Embed(title="Ping: {}ms.".format(delta_ping),
                               description=":green_book: Ping is normal! There's no need to inform bot support.",
                               color=0x00ff00)
-        await ctx.message.channel.send(embed=embed)
+        await message.channel.send(embed=embed)
         return
     elif delta_ping < 200:
         embed = discord.Embed(title="Ping: {}ms.".format(delta_ping),
@@ -98,28 +98,28 @@ async def ping(ctx):
                                           "but try using !ping again after 5 minutes and check the ping again, "
                                           "just in case.",
                               color=0xfe9a2e)
-        await ctx.message.channel.send(embed=embed)
+        await message.channel.send(embed=embed)
         return
     else:
         embed = discord.Embed(title="Ping: {}ms.".format(delta_ping),
                               description=":closed_book: Ping is high! Please, type ``inform`` to inform bot support.",
                               color=0xff0000)
-        await ctx.message.channel.send(embed=embed)
+        await message.channel.send(embed=embed)
 
-        async def check(message):
-            return message.content == 'inform' and message.channel == ctx.message.channel
+        async def check(checked_message):
+            return checked_message.content == 'inform' and checked_message.channel == message.channel
 
         msg = await bot.wait_for('message', check=check)
 
         if msg is None:
-            await ctx.message.channel.send(
+            await message.channel.send(
                 "Alright, {}. The bot support wasn't informed because you didn't typed ``inform``.".format(
-                    ctx.message.author.name))
+                    message.author.name))
         else:
             informed = discord.Embed(title="Thank you! The bot support has been informed.", description="owo",
                                      color=0x3adf00)
-            botsupportchannel = discord.utils.get(ctx.message.server.channels, name="logs")
-            await botsupportchannel.send("{} reported a high ping! {}ms.".format(ctx.message.author, delta_ping))
+            botsupportchannel = discord.utils.get(message.server.channels, name="logs")
+            await botsupportchannel.send("{} reported a high ping! {}ms.".format(message.author, delta_ping))
             await botsupportchannel.send("", embed=informed)
 
 
@@ -140,7 +140,5 @@ async def run_tests():
     await bot.logout()
     print("Logged out, see you later! ^^")
 
-
-bot.add_command(ping)
 
 bot.run(os.environ.get("token"))
