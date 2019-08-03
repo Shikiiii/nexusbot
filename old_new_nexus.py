@@ -36,8 +36,7 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     print("Received message from channel " + str(message.channel))
-    print("Channel id: " + str(message.channel.id))
-    if message.channel.id == "599640898233565198":
+    if message.channel.id == 599640898233565198:
         print("Message is in the right channel!")
         print("Trying to matching message to a role... Message:" + message.content)
         if message.content in role_names:
@@ -81,7 +80,7 @@ async def on_message(message):
                 await message.author.remove_roles(role)
 
 
-@bot.command(pass_context=True)
+@bot.command(name='ping')
 async def ping(ctx):
     print("Testing ping!")
     delta = datetime.datetime.now() - ctx.message.timestamp
