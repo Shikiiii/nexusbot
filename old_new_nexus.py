@@ -103,10 +103,10 @@ async def ping(ctx):
                               color=0xff0000)
         await channel.send(embed=embed)
         
-		async def check(msg):
-			return msg.content == 'inform' and m.channel == ctx.message.channel
+        async def check(msg):
+            return msg.content == 'inform' and m.channel == ctx.message.channel
 		
-		msg = await bot.wait_for('message', check=check)
+            msg = await bot.wait_for('message', check=check)
 
         if msg is None:
             await channel.send("Alright, {}. The bot support wasn't informed because you didn't typed ``inform``.".format(
