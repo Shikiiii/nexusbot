@@ -60,9 +60,9 @@ async def on_message(message):
                 print("Great success!")
                 embed = discord.Embed(title="You successfully changed your color to **{}**.".format(str(new_role)),
                                       description="Enjoy your new color! | Nexus", color=new_role.colour)
-                await message.author.send_message(embed=embed)
+                await message.author.send(embed=embed)
         else:
-            await message.author.send_message(
+            await message.author.send(
                 ":x: | You entered an invalid color.\n"
                 "Please note that the colors are case sensitive, so spell them as you see them.\n"
                 "```\n"
