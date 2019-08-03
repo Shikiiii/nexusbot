@@ -35,6 +35,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    print("Received message!")
     if message.channel.id == "599640898233565198":
         print("Message is in the right channel!")
         print("Trying to matching message to a role... Message:" + message.content)
@@ -81,6 +82,7 @@ async def on_message(message):
 
 @bot.command(pass_context=True)
 async def ping(ctx):
+    print("Testing ping!")
     delta = datetime.datetime.now() - ctx.message.timestamp
     delta_ping = round(delta.microseconds / 1000)
     if delta_ping < 100:
