@@ -35,7 +35,8 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    print("Received message!")
+    print("Received message from channel " + message.channel)
+    print("Channel id: " + message.channel.id)
     if message.channel.id == "599640898233565198":
         print("Message is in the right channel!")
         print("Trying to matching message to a role... Message:" + message.content)
