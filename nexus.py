@@ -1,4 +1,4 @@
-from collections import Set
+from typing import Set
 
 import discord
 from discord import Guild, Client, Message, TextChannel, Role

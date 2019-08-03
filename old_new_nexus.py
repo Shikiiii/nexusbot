@@ -1,8 +1,7 @@
 # Trying to make the "ping" command work, just temporary:
 import datetime
 import os
-from collections import Set
-from typing import Optional
+from typing import Optional, Set
 
 import discord
 from discord import Message, Guild
