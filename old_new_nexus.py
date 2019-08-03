@@ -81,6 +81,44 @@ async def on_message(message):
                 await message.author.remove_roles(role)
 
 
+@bot.command(pass_context=True)
+async def ping(ctx):
+    delta = datetime.datetime.now() - ctx.message.timestamp
+    ping = round(delta.microseconds / 1000)
+    if ping < 100:
+        embed = discord.Embed(title="Ping: {}ms.".format(ping),
+                              description=":green_book: Ping is normal! There's no need to inform bot support.",
+                              color=0x00ff00)
+        await channel.send(embed=embed)
+        return
+    elif ping < 200:
+        embed = discord.Embed(title="Ping: {}ms.".format(ping),
+                              description=":orange_book: Ping is abnormal! There's no need to inform bot support, but try using !ping again after 5 minutes and check the ping again, just in case.",
+                              color=0xfe9a2e)
+        await channel.send(embed=embed)
+        return
+    else:
+        embed = discord.Embed(title="Ping: {}ms.".format(ping),
+                              description=":closed_book: Ping is high! Please, type ``inform`` to inform bot support.",
+                              color=0xff0000)
+        await channel.send(embed=embed)
+        
+		async def check(msg):
+			return msg.content == 'inform' and m.channel == ctx.message.channel
+		
+		msg = await bot.wait_for('message', check=check)
+
+        if msg is None:
+            await channel.send("Alright, {}. The bot support wasn't informed because you didn't typed ``inform``.".format(
+                                       ctx.message.author.name))
+            return
+
+        informed = discord.Embed(title="Thank you! The bot support has been informed.", description="owo",
+                                 color=0x3adf00)
+        botsuppchannel = discord.utils.get(ctx.message.server.channels, name="logs")
+        await botsupportchannel.send("{} reported a high ping! {}ms.".format(ctx.message.author, ping))
+        await botsupportchannel.send("", embed=informed)
+
 async def run_tests():
     print("Running tests!")
     cant = discord.utils.get(server.members, id="393839495859929089")
