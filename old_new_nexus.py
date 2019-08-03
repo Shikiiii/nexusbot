@@ -1,16 +1,19 @@
 # Trying to make the "ping" command work, just temporary:
 import datetime
 import os
+from collections import Set
+from typing import Optional
 
 import discord
+from discord import Message, Guild
 from discord.ext.commands import Bot
 
 bot = Bot(command_prefix='!')
 bot.remove_command('help')
 
-server = None
+server: Optional[Guild] = None
 
-role_names = set()
+role_names: Set[str] = set()
 
 
 @bot.event
@@ -34,7 +37,7 @@ async def on_ready():
 # await run_tests()
 
 @bot.event
-async def on_message(message):
+async def on_message(message: Message):
     print("Received message from channel " + str(message.channel))
     if message.content == "!ping":
         await ping(message)
@@ -49,9 +52,7 @@ async def on_message(message):
                 print("Checking colored roles to remove...")
                 toremove = []
                 for role in message.author.roles:
-                    print("a")
                     if role.name in role_names:
-                        print("b")
                         toremove.append(role)
                 print("Removing colored roles...")
                 for role in toremove:
@@ -82,9 +83,9 @@ async def on_message(message):
                 await message.author.remove_roles(role)
 
 
-async def ping(message):
+async def ping(message: Message):
     print("Testing ping!")
-    delta = datetime.datetime.now() - message.timestamp
+    delta = datetime.datetime.now() - message.created_at
     delta_ping = round(delta.microseconds / 1000)
     if delta_ping < 100:
         embed = discord.Embed(title="Ping: {}ms.".format(delta_ping),
