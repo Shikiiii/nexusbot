@@ -125,7 +125,7 @@ async def ping(message: Message):
             await botsupportchannel.send("", embed=informed)
 
 async def servericon(message: Message):
-    await message.channel.send("{}".format(message.author.server.icon_url))
+    await message.channel.send("{}".format(message.author.guild.icon_url))
 
 async def run_tests():
     print("Running tests!")
