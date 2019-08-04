@@ -40,6 +40,8 @@ async def on_message(message: Message):
     print("Received message from channel " + str(message.channel))
     if message.content == "!ping":
         await ping(message)
+    if message.content == "!servericon":
+        await servericon(message)
     elif message.channel.id == 599640898233565198:
         print("Message is in the right channel!")
         print("Trying to matching message to a role... Message:" + message.content)
@@ -122,6 +124,8 @@ async def ping(message: Message):
             await botsupportchannel.send("{} reported a high ping! {}ms.".format(message.author, delta_ping))
             await botsupportchannel.send("", embed=informed)
 
+async def servericon(message: Message):
+    await message.channel.send("{}".format(message.author.server.icon_url))
 
 async def run_tests():
     print("Running tests!")
