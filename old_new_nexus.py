@@ -44,7 +44,7 @@ async def on_message(message: Message):
         await servericon(message)
     elif "<@393839495859929089>" in message.content:
         await message.delete()
-        await message.channel.send("{}, that's not cool, you know. If you just pinged her for **literally nothing**, you'll beg for forgiveness.".format(message.author))
+        await message.channel.send("{}, that's not cool, you know. If you just pinged her for **literally nothing**, you'll beg for forgiveness.".format(message.author.mention))
     elif message.channel.id == 599640898233565198:
         print("Message is in the right channel!")
         print("Trying to matching message to a role... Message:" + message.content)
