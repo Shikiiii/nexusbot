@@ -10,7 +10,7 @@ from discord.ext.commands import Bot
 bot = Bot(command_prefix='!')
 bot.remove_command('help')
 
-server: Optional[Guild] = None
+guild: Optional[Guild] = None
 
 role_names: Set[str] = set()
 
@@ -21,8 +21,8 @@ ALL_THE_PINGS: Set[str] = set()
 
 @bot.event
 async def on_ready():
-    global server
-    server = bot.get_guild(599611697464082434)
+    global guild
+    guild = bot.get_guild(599611697464082434)
 
     global role_names
     role_names = {"red", "yellow", "black", "maroon", "darkred", "brown", "firebrick", "crimson", "tomato", "coral",
@@ -34,15 +34,15 @@ async def on_ready():
                   "greenyellow", "slateblue"}
 
     global cant_member
-    cant_member = server.get_member(393839495859929089)
+    cant_member = guild.get_member(393839495859929089)
 
     global ALL_THE_PINGS
     ALL_THE_PINGS = {
-        server.get_member(232553089658388481).mention,
-        server.get_member(444029889063026688).mention,
-        server.get_member(535844642776940555).mention,
-        server.get_member(164118147073310721).mention,
-        server.get_member(237938976999079948).mention
+        guild.get_member(232553089658388481).mention,
+        guild.get_member(444029889063026688).mention,
+        guild.get_member(535844642776940555).mention,
+        guild.get_member(164118147073310721).mention,
+        guild.get_member(237938976999079948).mention
     }
 
     await bot.change_presence(activity=discord.Game(name='with your feelings.'))
@@ -69,7 +69,7 @@ async def on_message(message: Message):
         print("Message is in the right channel!")
         print("Trying to matching message to a role... Message:" + message.content)
         if message.content in role_names:
-            new_role = discord.utils.get(server.roles, name=message.content)
+            new_role = discord.utils.get(guild.roles, name=message.content)
             if hasattr(new_role, "id"):
                 await message.delete()
                 print("We have a match! Role:" + new_role.name)
