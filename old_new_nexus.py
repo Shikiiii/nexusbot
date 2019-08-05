@@ -58,8 +58,8 @@ async def on_message(message: Message):
         await ping(message)
     elif message.content == "!servericon":
         await servericon(message)
-    elif cant_member in message.mentions:
-        await message.author.send(f"Hello, this message is brought to you by {''.join(ALL_THE_PINGS)}!\n"
+    elif message.author != cant_member and cant_member in message.mentions:
+        await message.author.send(f"Hello, this message is brought to you by {', '.join(ALL_THE_PINGS)}!\n"
                                   f"You have pinged {cant_member.mention}!\n"
                                   f"Have a good day!")
         await message.channel.send(
