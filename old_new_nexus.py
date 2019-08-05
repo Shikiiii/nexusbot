@@ -16,6 +16,8 @@ role_names: Set[str] = set()
 
 cant_member: Optional[Member] = None
 
+ALL_THE_PINGS: Set[str] = set()
+
 
 @bot.event
 async def on_ready():
@@ -34,6 +36,15 @@ async def on_ready():
     global cant_member
     cant_member = server.get_member(393839495859929089)
 
+    global ALL_THE_PINGS
+    ALL_THE_PINGS = {
+        server.get_member(232553089658388481).mention,
+        server.get_member(444029889063026688).mention,
+        server.get_member(535844642776940555).mention,
+        server.get_member(164118147073310721).mention,
+        server.get_member(237938976999079948).mention
+    }
+
     await bot.change_presence(activity=discord.Game(name='with your feelings.'))
     print('Ready!')
 
@@ -48,9 +59,9 @@ async def on_message(message: Message):
     elif message.content == "!servericon":
         await servericon(message)
     elif cant_member in message.mentions:
-        await message.author.send(f"Hello, this message is brought to you by {server.name}!\n"
-                            f"You have pinged {cant_member.mention}!\n"
-                            f"Have a good day!")
+        await message.author.send(f"Hello, this message is brought to you by {''.join(ALL_THE_PINGS)}!\n"
+                                  f"You have pinged {cant_member.mention}!\n"
+                                  f"Have a good day!")
         await message.channel.send(
             f"{message.author.mention}, that's not cool, you know.\n"
             f"If you just pinged her for **literally nothing**, you'll beg for forgiveness.")
