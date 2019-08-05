@@ -48,7 +48,9 @@ async def on_message(message: Message):
     elif message.content == "!servericon":
         await servericon(message)
     elif cant_member in message.mentions:
-        await message.delete()
+        await message.author.send(f"Hello, this message is brought to you by {server.name}!\n"
+                            f"You have pinged {cant_member.mention}!\n"
+                            f"Have a good day!")
         await message.channel.send(
             f"{message.author.mention}, that's not cool, you know.\n"
             f"If you just pinged her for **literally nothing**, you'll beg for forgiveness.")
