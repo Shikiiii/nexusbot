@@ -4,7 +4,7 @@ import os
 from typing import Optional, Set
 
 import discord
-from discord import Message, Guild
+from discord import Message, Guild, Member
 from discord.ext.commands import Bot
 
 bot = Bot(command_prefix='!')
@@ -13,6 +13,8 @@ bot.remove_command('help')
 server: Optional[Guild] = None
 
 role_names: Set[str] = set()
+
+cant_member: Optional[Member] = None
 
 
 @bot.event
@@ -29,6 +31,9 @@ async def on_ready():
                   "lawngreen", "darkorchid", "darkviolet", "darkmagenta", "mediumpurple", "mediumslateblue",
                   "greenyellow", "slateblue"}
 
+    global cant_member
+    cant_member = server.get_member(393839495859929089)
+
     await bot.change_presence(activity=discord.Game(name='with your feelings.'))
     print('Ready!')
 
@@ -42,9 +47,11 @@ async def on_message(message: Message):
         await ping(message)
     elif message.content == "!servericon":
         await servericon(message)
-    elif "<@393839495859929089>" in message.content:
+    elif cant_member in message.mentions:
         await message.delete()
-        await message.channel.send("{}, that's not cool, you know. If you just pinged her for **literally nothing**, you'll beg for forgiveness.".format(message.author.mention))
+        await message.channel.send(
+            f"{message.author.mention}, that's not cool, you know.\n"
+            f"If you just pinged her for **literally nothing**, you'll beg for forgiveness.")
     elif message.channel.id == 599640898233565198:
         print("Message is in the right channel!")
         print("Trying to matching message to a role... Message:" + message.content)
@@ -65,7 +72,7 @@ async def on_message(message: Message):
                 print("Adding " + new_role.name + " role...")
                 await message.author.add_roles(new_role)
                 print("Great success!")
-                embed = discord.Embed(title="You successfully changed your color to **{}**.".format(str(new_role)),
+                embed = discord.Embed(title=f"You successfully changed your color to **{str(new_role)}**.",
                                       description="Enjoy your new color! | Nexus", color=new_role.colour)
                 await message.author.send(embed=embed)
         else:
@@ -92,13 +99,13 @@ async def ping(message: Message):
     delta = datetime.datetime.now() - message.created_at
     delta_ping = round(delta.microseconds / 1000)
     if delta_ping < 100:
-        embed = discord.Embed(title="Ping: {}ms.".format(delta_ping),
+        embed = discord.Embed(title=f"Ping: {delta_ping}ms.",
                               description=":green_book: Ping is normal! There's no need to inform bot support.",
                               color=0x00ff00)
         await message.channel.send(embed=embed)
         return
     elif delta_ping < 200:
-        embed = discord.Embed(title="Ping: {}ms.".format(delta_ping),
+        embed = discord.Embed(title=f"Ping: {delta_ping}ms.",
                               description=":orange_book: Ping is abnormal! There's no need to inform bot support, "
                                           "but try using !ping again after 5 minutes and check the ping again, "
                                           "just in case.",
@@ -106,7 +113,7 @@ async def ping(message: Message):
         await message.channel.send(embed=embed)
         return
     else:
-        embed = discord.Embed(title="Ping: {}ms.".format(delta_ping),
+        embed = discord.Embed(title=f"Ping: {delta_ping}ms.",
                               description=":closed_book: Ping is high! Please, type ``inform`` to inform bot support.",
                               color=0xff0000)
         await message.channel.send(embed=embed)
@@ -118,34 +125,17 @@ async def ping(message: Message):
 
         if msg is None:
             await message.channel.send(
-                "Alright, {}. The bot support wasn't informed because you didn't typed ``inform``.".format(
-                    message.author.name))
+                f"Alright, {message.author.name}. The bot support wasn't informed because you didn't type ``inform``.")
         else:
             informed = discord.Embed(title="Thank you! The bot support has been informed.", description="owo",
                                      color=0x3adf00)
             botsupportchannel = discord.utils.get(message.server.channels, name="logs")
-            await botsupportchannel.send("{} reported a high ping! {}ms.".format(message.author, delta_ping))
+            await botsupportchannel.send(f"{str(message.author)} reported a high ping! {delta_ping}ms.")
             await botsupportchannel.send("", embed=informed)
 
+
 async def servericon(message: Message):
-    await message.channel.send("{}".format(message.author.guild.icon_url))
-
-async def run_tests():
-    print("Running tests!")
-    cant = discord.utils.get(server.members, id="393839495859929089")
-    print(cant)
-
-    test_role = discord.utils.get(server.roles, name="pink")
-    print("Removing " + str(test_role) + " role...")
-    await cant.remove_roles(test_role)
-
-    test_role = discord.utils.get(server.roles, name="red")
-    print("Adding " + str(test_role) + " role...")
-    await cant.add_roles(test_role)
-
-    print("Tests done! Logging out...")
-    await bot.logout()
-    print("Logged out, see you later! ^^")
+    await message.channel.send(f"{message.author.guild.icon_url}")
 
 
 bot.run(os.environ.get("token"))
