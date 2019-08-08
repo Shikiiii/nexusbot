@@ -4,11 +4,9 @@ import os
 from typing import Optional, Set
 
 import discord
-from discord import Message, Guild, Member
-from discord.ext.commands import Bot
+from discord import Client, Message, Guild, Member
 
-bot = Bot(command_prefix='!')
-bot.remove_command('help')
+client = Client()
 
 guild: Optional[Guild] = None
 
@@ -19,10 +17,10 @@ cant_member: Optional[Member] = None
 ALL_THE_PINGS: Set[str] = set()
 
 
-@bot.event
+@client.event
 async def on_ready():
     global guild
-    guild = bot.get_guild(599611697464082434)
+    guild = client.get_guild(599611697464082434)
 
     global role_names
     role_names = {"red", "yellow", "black", "maroon", "darkred", "brown", "firebrick", "crimson", "tomato", "coral",
@@ -45,13 +43,13 @@ async def on_ready():
         guild.get_member(237938976999079948).mention
     }
 
-    await bot.change_presence(activity=discord.Game(name='with your feelings.'))
+    await client.change_presence(activity=discord.Game(name='with your feelings.'))
     print('Ready!')
 
 
 # await run_tests()
 
-@bot.event
+@client.event
 async def on_message(message: Message):
     print("Received message from channel " + str(message.channel))
     if message.content == "!ping":
@@ -134,7 +132,7 @@ async def ping(message: Message):
         async def check(checked_message):
             return checked_message.content == 'inform' and checked_message.channel == message.channel
 
-        msg = await bot.wait_for('message', check=check)
+        msg = await client.wait_for('message', check=check)
 
         if msg is None:
             await message.channel.send(
@@ -151,4 +149,4 @@ async def servericon(message: Message):
     await message.channel.send(f"{message.author.guild.icon_url}")
 
 
-bot.run(os.environ.get("token"))
+client.run(os.environ.get("token"))
