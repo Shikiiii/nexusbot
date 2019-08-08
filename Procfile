@@ -1,1 +1,1 @@
-worker: python old_new_nexus.py
+worker: python nexus.py
