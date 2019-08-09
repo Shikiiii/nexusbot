@@ -50,6 +50,8 @@ class MyClient(Client):
             await message.channel.send(
                 f"{message.author.mention}, that's not cool, you know.\n"
                 f"If you just pinged her for **literally nothing**, you'll beg for forgiveness.")
+        elif message.content.startswith("!echo"):
+            await ctx.send(message.content[start:end])
         elif message.channel.id == 599640898233565198:
             print("Message is in the right channel!")
             print("Trying to matching message to a role... Message:" + message.content)
