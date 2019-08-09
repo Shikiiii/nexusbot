@@ -1,1 +1,1 @@
-worker: python nexus_with_annotations.py
+worker: python nexus_with_classes.py
