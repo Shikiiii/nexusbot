@@ -42,14 +42,14 @@ class MyClient(Client):
             await ping(message)
         elif message.content == "!servericon":
             await servericon(message)
-        elif message.author != self.cant_member and (
-                self.cant_member in message.mentions or message.content == "!test_ping"):
-            await message.author.send(f"Hello, this message is brought to you by {', '.join(self.ALL_THE_PINGS)}!\n"
-                                      f"You have pinged {self.cant_member.mention}!\n"
-                                      f"Have a good day!")
-            await message.channel.send(
-                f"{message.author.mention}, that's not cool, you know.\n"
-                f"If you just pinged her for **literally nothing**, you'll beg for forgiveness.")
+        #elif message.author != self.cant_member and (
+        #        self.cant_member in message.mentions or message.content == "!test_ping"):
+        #    await message.author.send(f"Hello, this message is brought to you by {', '.join(self.ALL_THE_PINGS)}!\n"
+        #                              f"You have pinged {self.cant_member.mention}!\n"
+        #                              f"Have a good day!")
+        #    await message.channel.send(
+        #        f"{message.author.mention}, that's not cool, you know.\n"
+        #        f"If you just pinged her for **literally nothing**, you'll beg for forgiveness.")
         elif message.content.startswith("!echo"):
             await message.channel.send(message.author.mention + ": " + message.content[6:])
         elif message.channel.id == 599640898233565198:
