@@ -37,7 +37,7 @@ class MyClient(Client):
         print('Ready!')
 
     async def on_message(self, message: Message):
-        print("Received message from channel " + str(message.channel))
+        #print("Received message from channel " + str(message.channel))
         if message.content == "!ping":
             await ping(message)
         elif message.content == "!servericon":
