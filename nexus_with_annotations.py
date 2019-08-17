@@ -106,43 +106,22 @@ async def on_message(message: Message):
 
 
 async def ping(message: Message):
-    print("Testing ping!")
+    #print("Testing ping!")
     delta = datetime.datetime.now() - message.created_at
     delta_ping = round(delta.microseconds / 1000)
     if delta_ping < 100:
         embed = discord.Embed(title=f"Ping: {delta_ping}ms.",
-                              description=":green_book: Ping is normal! There's no need to inform bot support.",
                               color=0x00ff00)
         await message.channel.send(embed=embed)
         return
     elif delta_ping < 200:
         embed = discord.Embed(title=f"Ping: {delta_ping}ms.",
-                              description=":orange_book: Ping is abnormal! There's no need to inform bot support, "
-                                          "but try using !ping again after 5 minutes and check the ping again, "
-                                          "just in case.",
                               color=0xfe9a2e)
         await message.channel.send(embed=embed)
         return
     else:
         embed = discord.Embed(title=f"Ping: {delta_ping}ms.",
-                              description=":closed_book: Ping is high! Please, type ``inform`` to inform bot support.",
-                              color=0xff0000)
         await message.channel.send(embed=embed)
-
-        async def check(checked_message):
-            return checked_message.content == 'inform' and checked_message.channel == message.channel
-
-        msg = await client.wait_for('message', check=check)
-
-        if msg is None:
-            await message.channel.send(
-                f"Alright, {message.author.name}. The bot support wasn't informed because you didn't type ``inform``.")
-        else:
-            informed = discord.Embed(title="Thank you! The bot support has been informed.", description="owo",
-                                     color=0x3adf00)
-            botsupportchannel = discord.utils.get(message.server.channels, name="logs")
-            await botsupportchannel.send(f"{str(message.author)} reported a high ping! {delta_ping}ms.")
-            await botsupportchannel.send("", embed=informed)
 
 
 async def servericon(message: Message):
